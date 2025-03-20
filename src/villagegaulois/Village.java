@@ -44,7 +44,7 @@ public class Village {
 		return null;
 	}
 
-	public String afficherVillageois() {
+	public String afficherVillageois() throws VillageSansChefException {
 		if (chef == null) {
 			throw new VillageSansChefException(nom);
 		}
@@ -101,18 +101,18 @@ public class Village {
 	private static class Marche {
 		private Etal[] etals;
 
-		public Marche(int nbEtals) {
+		private Marche(int nbEtals) {
 			etals = new Etal[nbEtals];
 			for (int i = 0; i < nbEtals; i++) {
 				etals[i] = new Etal();
 			}
 		}
 
-		public void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
+		private void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
 			(this.etals[indiceEtal]).occuperEtal(vendeur, produit, nbProduit);
 		}
 
-		public int trouverEtalLibre() {
+		private int trouverEtalLibre() {
 			for (int i = 0; i < this.etals.length; i++) {
 				if (!this.etals[i].isEtalOccupe()) {
 					return i;
@@ -131,7 +131,7 @@ public class Village {
 			return nbEtals;
 		}
 
-		public Etal[] trouverEtals(String produit) {
+		private Etal[] trouverEtals(String produit) {
 			int nbEtals = nombreEtalsVendantProduit(produit);
 			Etal[] etalsVendantProduit = new Etal[nbEtals];
 			int j = 0;
@@ -144,7 +144,7 @@ public class Village {
 			return etalsVendantProduit;
 		}
 
-		public Etal trouverVendeur(Gaulois gaulois) {
+		private Etal trouverVendeur(Gaulois gaulois) {
 			for (int i = 0; i < trouverEtalLibre(); i++) {
 				if (etals[i].getVendeur() == gaulois) {
 					return etals[i];
@@ -153,7 +153,7 @@ public class Village {
 			return null;
 		}
 
-		public String afficherMarche() {
+		private String afficherMarche() {
 			StringBuilder chaine = new StringBuilder();
 			for (int i = 0; i < etals.length; i++) {
 				if (etals[i].isEtalOccupe()) {
@@ -165,7 +165,7 @@ public class Village {
 		}
 	}
 
-	public class VillageSansChefException extends IllegalArgumentException {
+	public class VillageSansChefException extends Exception {
 
 		public VillageSansChefException(String message) {
 			super(message);
